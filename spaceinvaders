@@ -1,0 +1,212 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class spacepumpkininvader extends JComponent implements Runnable, KeyListener {
+
+	ArrayList <junjun> pumpkinmckenzie = new ArrayList<junjun>();
+
+	
+	int max = 12;
+	static int startX=0;
+	static int startY=0;
+	jody catplayer;
+	fireball ball;
+
+public spacepumpkininvader(){
+	for (int i = 0; i< 3; i++){
+		for (int j=0; j<4; j++){
+			pumpkinmckenzie.add(0, new junjun (j*70,i*60));
+		}
+	
+}
+	catplayer=new jody(0,550);
+	ball=new fireball(catplayer.a, catplayer.b);
+	Thread t = new Thread(this);
+	t.start();
+	} 
+
+
+public void paint(Graphics g){
+	for (int i=0; i<max; i++){
+		pumpkinmckenzie.get(i).paint(g, this);
+}
+	
+	catplayer.paint(g,this);
+	ball.paint(g, this);
+}
+
+public static void main(String[] args) {
+		spacepumpkininvader temp = new spacepumpkininvader();
+		JFrame frame = new JFrame("SPOOKY PUMPKIN");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(700, 700);
+		frame.add(temp);
+		frame.addKeyListener(temp);
+		frame.setVisible(true);
+		frame.getContentPane().setBackground(Color.white);
+	}
+
+	@Override
+	public void run() {
+		while(true) {
+			//(pumpkin.size()==1 return;)
+			ball.update();
+for (int i=0; i<pumpkinmckenzie.size(); i++){
+				pumpkinmckenzie.get(i).update();
+			}	
+			if (junjun.spookypumpkin){
+				junjun.spookypumpkin = false;
+				for(int i=0; i<pumpkinmckenzie.size(); i++){
+					pumpkinmckenzie.get(i).y+= 50;
+					pumpkinmckenzie.get(i).vx*=-1;
+				}
+			}
+
+			repaint();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.ImageObserver;
+
+public class junjun {
+	double x,y,vx,vy;
+	Image junjun;
+	public static boolean spookypumpkin;
+	
+	public junjun(int startX, int startY){
+		this.x=startX;
+		this.y=startY;
+		this.vx=7;
+		this.vy=0;
+		this.junjun=Toolkit.getDefaultToolkit().getImage("pumpkinmckenzie.png");	
+	}
+
+	public void update(){
+		this.x+=vx;
+		this.y+=vy;
+		if (this.x > 600){
+			spookypumpkin= true;
+		}
+		if (this.y > 450){
+			spookypumpkin= true;
+		}
+		if (this.x < 0){
+			spookypumpkin=true;
+		}
+		if (this.y< 0){
+			spookypumpkin=true;
+		}
+	}
+	
+	public void paint (Graphics g, ImageObserver io){
+		g.drawImage(this.junjun, (int)x, (int)y, 50,50, io);
+		
+	}
+	private Image getImage(){
+		return junjun;
+	}
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.ImageObserver;
+public class jody{
+	
+	Double a, b, va, vb;
+	Image uglycat;
+
+	public jody(int startA, int startB){
+		this.a= (double) startA;
+		this.b= (double) startB;
+		this.uglycat=Toolkit.getDefaultToolkit().getImage("uglycat.png"); 
+}
+
+public void left(){
+	a=a-10;
+}
+public void right(){
+	a=a+10;
+}
+public void paint (Graphics g, ImageObserver io){
+	g.drawImage(this.uglycat, a, b,  50, 50, io);
+}
+private Image getImage(){
+	return uglycat;
+}
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+//ball
+//ball
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.ImageObserver;
+
+public class fireball{
+	double a, b, va, vb;
+	Image ball;
+
+	public fireball(double startA, double startB){
+		this.a=startA;
+		this.b=startB;
+		this.ball=Toolkit.getDefaultToolkit().getImage("ball.png");
+}
+public void update(){
+	b=b-10;
+}
+public void paint (Graphics g, ImageObserver io){
+	g.drawImage(this.ball, a, b, 50, 50, io);
+}
+private Image getImage(){
+	return ball;
+}
+
+}
+
+
+
